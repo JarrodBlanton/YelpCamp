@@ -1,0 +1,19 @@
+{
+  "name": "yelpcamp",
+  "version": "1.0.0",
+  "description": "Final project for webdev bootcamp utilizing the full stack. ",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "npm"
+  ],
+  "author": "Jarrod Blanton",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "ejs": "^2.5.7",
+    "express": "^4.16.2"
+  }
+}
