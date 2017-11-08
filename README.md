@@ -1,3 +1,2 @@
 # YelpCamp
-#### This project is the final project for a first web development bootcamp course using the full stack
-
+A full stack project for the final section of my first web development bootcamp.
