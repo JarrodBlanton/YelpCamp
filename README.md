@@ -10,10 +10,8 @@ A full stack project for the final section of my first web development bootcamp.
 * Review RESTful routes
 
 RESTful Routes
-
-name        url            verb       description
 ==============================================================
-INDEX   /campgrounds       GET   display list of all campgrounds
-NEW     /campgrounds/new   GET   displays form to make a new campground
-CREATE  /campgrounds       POST  add new campground to db
-SHOW    /campgrounds/:id   GET   shows info about one campground
+* INDEX   /campgrounds       GET   display list of all campgrounds
+* NEW     /campgrounds/new   GET   displays form to make a new campground
+* CREATE  /campgrounds       POST  add new campground to db
+* SHOW    /campgrounds/:id   GET   shows info about one campground
