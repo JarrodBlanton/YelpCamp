@@ -1,16 +1,14 @@
 # YelpCamp
 A full stack project for the final section of my first web development bootcamp.
 
-# Add Mongoose
-* Install and configure Mongoose
+## Add Mongoose
 * Setup campground model
 * Use campground model inside of routes
 
-# Show Page 
+## Show Page 
 * Review RESTful routes
 
-RESTful Routes
-==============================================================
+## RESTful Routes
 * INDEX   /campgrounds       GET   display list of all campgrounds
 * NEW     /campgrounds/new   GET   displays form to make a new campground
 * CREATE  /campgrounds       POST  add new campground to db
