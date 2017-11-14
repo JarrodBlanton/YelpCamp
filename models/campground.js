@@ -5,7 +5,7 @@ var Campground = mongoose.model('Campground', {
     name: String,
     image: String, 
     description: String,
-    // Embed a object reference for database
+    // Embed a object reference to the comments
     comments: [
         {
             type: mongoose.Schema.Types.ObjectId,
