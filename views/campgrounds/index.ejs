@@ -4,11 +4,15 @@
 <div class="container">
 
     <header class="jumbotron">
-       <h1>Welcome to YelpCamp</h1>
-       <p>View hand-picked campgrounds from all over the world</p>
-       <p>
-        <a href='/campgrounds/new' type="button" class="btn btn-primary btn-lg">Add New Campground</a>
-       </p>
+        <% if (!currUser) { %>
+            <h1>Welcome to YelpCamp</h1>
+        <% } else { %>
+            <h1>Welcome to YelpCamp, <%= currUser.username %></h1>
+        <% } %>
+        <p>View hand-picked campgrounds from all over the world</p>
+        <p>
+            <a href='/campgrounds/new' type="button" class="btn btn-primary btn-lg">Add New Campground</a>
+        </p>
     </header>
 
     <!-- Start grid -->
