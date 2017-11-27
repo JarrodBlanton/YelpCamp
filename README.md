@@ -14,15 +14,20 @@ A mapping between HTTP routes and CRUD
 
 ### CRUD
 * CREATE
-* READ 
-* UPDATE
+* READ
+* UPDATE 
 * DESTROY 
 
 ### RESTful Routes for Campground
-* INDEX   /campgrounds       GET   display list of all campgrounds
-* NEW     /campgrounds/new   GET   displays form to make a new campground
-* CREATE  /campgrounds       POST  add new campground to db
-* SHOW    /campgrounds/:id   GET   shows info about one campground
+| State  | Route                 | HTTP   | Summary                                |
+|--------|-----------------------|--------|----------------------------------------|
+| INDEX  | /campgrounds          | GET    | display list of all campgrounds        |
+| NEW    | /campgrounds/new      | GET    | displays form to make a new campground |
+| CREATE | /campgrounds          | POST   | add new campground to db               |
+| SHOW   | /campgrounds/:id      | GET    | shows info about one campground        |
+| EDIT   | /campgrounds/:id/edit | GET    | Shows edit form for campground         |
+| UPDATE | /campgrounds/:id      | PUT    | Shows newly edited campground          |
+| DESTROY| /campgrounds/:id      | DELETE | Deletes campground                     |
 
 ## Nested routing for comments
 To add a comment, they will be related to the specific campground the user wants to comment on.
