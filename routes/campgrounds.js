@@ -18,7 +18,7 @@ router.get('/', function(req, res){
 });
 
 // CREATE Route: Add a new campground to database (REST concept)
-router.post('/', function(req, res) {
+router.post('/', isLoggedIn, function(req, res) {
     // REMEMBER: You obtain post data from the REQUEST's body
     // get data from site and add it to campgrounds array
     var name = req.body.name;
@@ -26,7 +26,16 @@ router.post('/', function(req, res) {
     var descr = req.body.description;
 
     // Create new campground and save to db
-    var newCampground = { name: name, image: img, description: descr };
+    var newCampground = { 
+        name: name,
+        image: img,
+        description: descr,
+        // Now adding author information to the campground model
+        author: {
+            id: req.user._id,
+            username: req.user.username
+        } 
+    };
 
     Campground.create(newCampground, function(err, campground) {
         if (err) { return console.log(err); }
@@ -39,7 +48,7 @@ router.post('/', function(req, res) {
 });
 
 // NEW Route: Show form to add new campground
-router.get('/new', function(req, res) {
+router.get('/new', isLoggedIn, function(req, res) {
     res.render('campgrounds/new');
 });
 
