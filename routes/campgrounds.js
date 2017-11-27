@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router({mergeParams: true});
 var Campground = require('../models/campground');
 var Comment = require('../models/comment');
+var methodOverride = require('method-override');
 
 // INDEX Route: view campgrounds
 router.get('/', function(req, res){
@@ -58,12 +59,46 @@ router.get('/:id', function(req, res) {
     // Populate the comments array with the data we need so we can access in the show file
     Campground.findById(id).populate('comments').exec(function(err, foundCampground) {
         if (err) {
-            return console.log(err);
+            console.log(err);
+            res.redirect('/campgrounds');
         } else {
             res.render('campgrounds/show', {campground: foundCampground})
         }
     });
 });
+
+// EDIT Route: Allows user to edit information about a campground
+router.get('/:id/edit', function(req, res) {
+    Campground.findById(req.params.id, function(err, foundCG) {
+        if (err) {
+            return console.log(err);
+        }
+        res.render('campgrounds/edit', {campground: foundCG});
+    })
+});
+
+// UPDATE Route: Updates the campground with the newly added info
+router.put('/:id', function(req, res) {
+    // Find and update correct campground
+    // req.body.campground was done by setting name attribute for each input tag to name="campground[x]"
+    Campground.findByIdAndUpdate(req.params.id, req.body.campground, function(err, updatedCG) {
+        if (err) {
+            console.log(err);
+            res.redirect('/campgrounds');
+        }
+        res.redirect('/campgrounds/' + req.params.id);
+    });
+});
+
+router.delete('/:id', function(req, res) {
+    Campground.findByIdAndRemove(req.params.id, function(err) {
+        if (err) {
+            console.log(err);
+        }
+        res.redirect('/campgrounds');
+    });
+});
+   
 
 // Checks to see if user is currently logged in
 function isLoggedIn(req, res, next) {
