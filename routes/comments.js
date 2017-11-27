@@ -15,7 +15,7 @@ router.get('/new', isLoggedIn, function (req, res) {
     });
 });
 
-// CREATE route
+// CREATE route for comment
 // Take the requests body and create a comment. Add the comment to the associated campground as long as user is logged in
 router.post('/', isLoggedIn, function(req, res) {
     var id = req.params.id
@@ -30,9 +30,15 @@ router.post('/', isLoggedIn, function(req, res) {
                 if (err) {
                     return console.log(err);
                 }
+                // Add username and id to post
+                // Remember we can grab user from req body because it is now local
+                comment.author.id = req.user._id;
+                comment.author.username = req.user.username;
+                comment.save();
                 // Add comment to campground, then save and redirect
                 campground.comments.push(comment);
                 campground.save();
+                console.log(comment);
                 res.redirect('/campgrounds/' + id);
             });
         }
