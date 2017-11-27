@@ -11,7 +11,15 @@ var Campground = mongoose.model('Campground', {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Comment"
         }
-    ]
+    ],
+    author: {
+        // Same functionality as the author object in model for comment
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        },
+        username: String
+    }
 });
 
 module.exports = Campground;
