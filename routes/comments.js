@@ -46,7 +46,7 @@ router.post('/', isLoggedIn, function(req, res) {
 });
 
 // EDIT route: Edit a comment (the route is nested so :id needs to be different because :id is param held by campground)
-router.get('/:comment_id/edit', function(req, res) {
+router.get('/:comment_id/edit', checkCommentOwnership, function(req, res) {
     Comment.findById(req.params.comment_id, function(err, comment) {
         if (err) {
             console.log(err);
@@ -57,12 +57,23 @@ router.get('/:comment_id/edit', function(req, res) {
     });
 });
 
-// UPDATE route: Update a comment
-router.put('/:comment_id', function(req, res) {
+// UPDATE route: Update a comment if it belongs to the user
+router.put('/:comment_id', checkCommentOwnership, function(req, res) {
     Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, comment) {
         if (err) { // if error, send user back to form
             res.redirect('back');
         } else { // otherwise send to show form
+            res.redirect('/campgrounds/' + req.params.id);
+        }
+    });
+});
+
+// DELETE route: Delete a comment if it belongs to the user
+router.delete('/:comment_id', checkCommentOwnership, function(req, res) {
+    Comment.findByIdAndRemove(req.params.comment_id, function(err) {
+        if (err) {
+            res.redirect('back');
+        } else {
             res.redirect('/campgrounds/' + req.params.id);
         }
     });
@@ -74,6 +85,28 @@ function isLoggedIn(req, res, next) {
         return next();
     }
     res.redirect('/login');
+}
+
+// Check if user owns the comment
+function checkCommentOwnership(req, res, next) {
+    // Check if user is logged in
+    if (req.isAuthenticated()) {
+        Comment.findById(req.params.comment_id, function(err, comment) {
+            if (err) {
+                res.redirect('back');
+            } else {
+                if (comment.author.id.equals(req.user._id)) { // check if comment's auther is the current user
+                    next();
+                } else {
+                    // user does not own comment
+                    res.redirect('back');
+                }
+            }
+        });
+    } else {
+        // user is not signed in
+        res.redirect('back');
+    }
 }
 
 module.exports = router;

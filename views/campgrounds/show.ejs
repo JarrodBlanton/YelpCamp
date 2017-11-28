@@ -19,10 +19,10 @@
                     <p><%= campground.description %></p>
                     <p> <em> Submitted by <%= campground.author.username %> </em> </p>
                     <!-- Check if campground is owned by current user (must check if there is a user as well -->
-                    <!-- currUser is a local variable held in res -->
+                    <!-- currUser is a local variable held in res from passport -->
                     <% if (currUser && campground.author.id.equals(currUser._id)) { %>
                         <a href="/campgrounds/<%= campground._id %>/edit" class="btn btn-warning" >Edit Campground</a>
-                        <form id="delete-form" action="/campgrounds/<%= campground._id %>?_method=delete" method="POST">
+                        <form class="delete-form" action="/campgrounds/<%= campground._id %>?_method=delete" method="POST">
                             <button class="btn btn-danger">Delete Campground</button>
                         </form>
                     <% } %>
@@ -36,12 +36,18 @@
                 <% campground.comments.forEach(function(comment) { %>
                     <div class="row">
                         <div class="col-md-12">
-                           <strong><%= comment.author.username %></strong>
-                           <span class="pull-right"><strong>10 days ago</strong></span>
-                           <p>
-                                <%= comment.text %>
-                           </p>
-                           <a class="btn btn-xs btn-warning" href="/campgrounds/<%=campground._id %>/comments/<%= comment._id %>/edit">Edit</a>
+                            <strong><%= comment.author.username %></strong>
+                            <span class="pull-right"><strong>10 days ago</strong></span>
+                            <p>
+                                 <%= comment.text %>
+                            </p>
+                            <!-- Makes sure user is logged in and the owner of the comment for the buttons to be displayed -->
+                            <% if (currUser && comment.author.id.equals(currUser._id)) { %> 
+                            <a class="btn btn-xs btn-warning" href="/campgrounds/<%=campground._id %>/comments/<%= comment._id %>/edit">Edit</a>
+                            <form class="delete-form" action="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>?_method=delete" method="POST">
+                                <button class="btn btn-xs btn-danger" >Delete</button>
+                            </form>
+                            <% } %>
                         </div>
                     </div>
                 <% }) %>
