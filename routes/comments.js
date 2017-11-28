@@ -2,10 +2,12 @@ var express = require('express');
 var router = express.Router({mergeParams: true}); // Merge params allows app to give information to this route
 var Campground = require('../models/campground');
 var Comment = require('../models/comment');
+var middleware = require('../middleware'); // full route not required because index is name of the file
+
 
 // NEW route
 // Checks to make sure user is logged in before allowing user to make a new comment
-router.get('/new', isLoggedIn, function (req, res) {
+router.get('/new', middleware.isLoggedIn, function (req, res) {
     Campground.findById(req.params.id, function(err, campground) {
         if (err) {
             return console.log(err);
@@ -17,7 +19,7 @@ router.get('/new', isLoggedIn, function (req, res) {
 
 // CREATE route for comment
 // Take the requests body and create a comment. Add the comment to the associated campground as long as user is logged in
-router.post('/', isLoggedIn, function(req, res) {
+router.post('/', middleware.isLoggedIn, function(req, res) {
     var id = req.params.id
     // Search for campground
     Campground.findById(id, function(err, campground){
@@ -46,7 +48,7 @@ router.post('/', isLoggedIn, function(req, res) {
 });
 
 // EDIT route: Edit a comment (the route is nested so :id needs to be different because :id is param held by campground)
-router.get('/:comment_id/edit', checkCommentOwnership, function(req, res) {
+router.get('/:comment_id/edit', middleware.checkCommentOwnership, function(req, res) {
     Comment.findById(req.params.comment_id, function(err, comment) {
         if (err) {
             console.log(err);
@@ -58,7 +60,7 @@ router.get('/:comment_id/edit', checkCommentOwnership, function(req, res) {
 });
 
 // UPDATE route: Update a comment if it belongs to the user
-router.put('/:comment_id', checkCommentOwnership, function(req, res) {
+router.put('/:comment_id', middleware.checkCommentOwnership, function(req, res) {
     Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, comment) {
         if (err) { // if error, send user back to form
             res.redirect('back');
@@ -69,7 +71,7 @@ router.put('/:comment_id', checkCommentOwnership, function(req, res) {
 });
 
 // DELETE route: Delete a comment if it belongs to the user
-router.delete('/:comment_id', checkCommentOwnership, function(req, res) {
+router.delete('/:comment_id', middleware.checkCommentOwnership, function(req, res) {
     Comment.findByIdAndRemove(req.params.comment_id, function(err) {
         if (err) {
             res.redirect('back');
@@ -78,35 +80,5 @@ router.delete('/:comment_id', checkCommentOwnership, function(req, res) {
         }
     });
 });
-
-// Checks to see if user is currently logged in
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect('/login');
-}
-
-// Check if user owns the comment
-function checkCommentOwnership(req, res, next) {
-    // Check if user is logged in
-    if (req.isAuthenticated()) {
-        Comment.findById(req.params.comment_id, function(err, comment) {
-            if (err) {
-                res.redirect('back');
-            } else {
-                if (comment.author.id.equals(req.user._id)) { // check if comment's auther is the current user
-                    next();
-                } else {
-                    // user does not own comment
-                    res.redirect('back');
-                }
-            }
-        });
-    } else {
-        // user is not signed in
-        res.redirect('back');
-    }
-}
 
 module.exports = router;
