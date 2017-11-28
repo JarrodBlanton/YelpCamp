@@ -49,7 +49,7 @@ router.post('/', middleware.isLoggedIn, function(req, res) {
 });
 
 // EDIT route: Edit a comment (the route is nested so :id needs to be different because :id is param held by campground)
-router.get('/:comment_id/edit', middleware.checkCommentOwnership, function(req, res) {
+router.get('/:comment_id/edit', middleware.isLoggedIn, middleware.checkCommentOwnership, function(req, res) {
     Comment.findById(req.params.comment_id, function(err, comment) {
         if (err) {
             console.log(err);

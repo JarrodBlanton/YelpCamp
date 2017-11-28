@@ -57,8 +57,10 @@ router.get('/:id', function(req, res) {
     var id = req.params.id;
     // Populate the comments array with the data we need so we can access in the show file
     Campground.findById(id).populate('comments').exec(function(err, foundCampground) {
-        if (err) {
+        // Additional error handling
+        if (err || !foundCampground) {
             console.log(err);
+            req.flash('error', 'Sorry! That campground does not exist!');
             res.redirect('/campgrounds');
         } else {
             res.render('campgrounds/show', {campground: foundCampground})
@@ -67,7 +69,7 @@ router.get('/:id', function(req, res) {
 });
 
 // EDIT Route: Allows user to edit information about a campground as long as the campground belongs to the current user
-router.get('/:id/edit', middleware.checkCampgroundOwnership, function(req, res) {  
+router.get('/:id/edit', middleware.isLoggedIn, middleware.checkCampgroundOwnership, function(req, res) {  
     Campground.findById(req.params.id, function(err, foundCG) {
         res.render('campgrounds/edit', {campground: foundCG});
     });   
