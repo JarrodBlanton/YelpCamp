@@ -1,16 +1,25 @@
 # YelpCamp
 A full stack project for the final section of my first web development bootcamp.
 
-## Add Mongoose
-* Setup campground model
-* Use campground model inside of routes
+## Full-stack Used
+* MongoDB/Mongoose
+* Express
+* NodeJS
 
-## Show Page 
-* Review RESTful routes
+## Project utilizes knowledge of...
+* HTML/CSS
+* Bootcamp
+* Express
+* Templating (ejs)
+* RESTful Routing
+* MongoDB/Mongoose
+* Modeling using mongoose Schemas
+* Passport
+
 
 ## RESTful Routes
-(RE)presentational (S)tate (T)ransfer
-A mapping between HTTP routes and CRUD
+* (RE)presentational (S)tate (T)ransfer
+    * A mapping between HTTP routes and CRUD
 
 ### CRUD
 * CREATE
@@ -34,4 +43,8 @@ To add a comment, they will be related to the specific campground the user wants
 Therefore, our routs for comments will look like this:
 * NEW       /campgrounds/:id/comments/new    GET
 * CREATE    /campgrounds/:id/comments        POST
+
+## Authorization
+* User can only edit/delete his/her campground
+* Hide/Show those edit/delete buttons
 
