@@ -24,11 +24,11 @@ router.post('/register', function(req, res) {
 
     User.register({username: username}, password, function(err, user) {
         if (err) {
-            console.log(err);
-            return res.render('register');
+            return res.render('register', {'error': err.message});
         } else {
             // Redirect to campgrounds page if user is authenticated correctly
             passport.authenticate('local')(req, res, function() {
+                req.flash('success', 'Thank you for registering, ' + user.username + '!'); // Give user welcome message
                 res.redirect('/campgrounds');
             });
         }
@@ -53,6 +53,7 @@ router.post('/login', passport.authenticate('local',
 // Logout route
 router.get('/logout', function(req, res) {
     req.logout();
+    req.flash('success', 'Goodbye!')
     res.redirect('/campgrounds');
 });
 
