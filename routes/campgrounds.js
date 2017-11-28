@@ -67,18 +67,15 @@ router.get('/:id', function(req, res) {
     });
 });
 
-// EDIT Route: Allows user to edit information about a campground
-router.get('/:id/edit', function(req, res) {
+// EDIT Route: Allows user to edit information about a campground as long as the campground belongs to the current user
+router.get('/:id/edit', checkOwnership, function(req, res) {  
     Campground.findById(req.params.id, function(err, foundCG) {
-        if (err) {
-            return console.log(err);
-        }
         res.render('campgrounds/edit', {campground: foundCG});
-    })
+    });   
 });
 
 // UPDATE Route: Updates the campground with the newly added info
-router.put('/:id', function(req, res) {
+router.put('/:id', checkOwnership, function(req, res) {
     // Find and update correct campground
     // req.body.campground was done by setting name attribute for each input tag to name="campground[x]"
     Campground.findByIdAndUpdate(req.params.id, req.body.campground, function(err, updatedCG) {
@@ -90,7 +87,7 @@ router.put('/:id', function(req, res) {
     });
 });
 
-router.delete('/:id', function(req, res) {
+router.delete('/:id', checkOwnership, function(req, res) {
     Campground.findByIdAndRemove(req.params.id, function(err) {
         if (err) {
             console.log(err);
@@ -106,6 +103,25 @@ function isLoggedIn(req, res, next) {
         return next();
     }
     res.redirect('/login');
+}
+
+// Checks if current user owns the queried campground
+function checkOwnership(req, res, next) {
+    if (req.isAuthenticated()) {
+        Campground.findById(req.params.id, function(err, campground) {
+            if (err) {
+                res.redirect('back');
+            } else {
+                if (campground.author.id.equals(req.user._id)) {
+                    next();
+                } else {
+                    res.redirect('back');
+                }
+            }
+        });
+    } else {// Sends user to previous route
+        res.redirect('back');
+    }
 }
 
 // Export the router and its added routes
