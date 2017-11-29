@@ -33,10 +33,10 @@ a MEEN stack :)
 ### RESTful Routes for Campground
 | State  | Route                 | HTTP   | Summary                                |
 |--------|-----------------------|--------|----------------------------------------|
-| INDEX  | /campgrounds          | GET    | display list of all campgrounds        |
-| NEW    | /campgrounds/new      | GET    | displays form to make a new campground |
-| CREATE | /campgrounds          | POST   | add new campground to db               |
-| SHOW   | /campgrounds/:id      | GET    | shows info about one campground        |
+| INDEX  | /campgrounds          | GET    | Display list of all campgrounds        |
+| NEW    | /campgrounds/new      | GET    | Displays form to make a new campground |
+| CREATE | /campgrounds          | POST   | Add new campground to db               |
+| SHOW   | /campgrounds/:id      | GET    | Shows info about one campground        |
 | EDIT   | /campgrounds/:id/edit | GET    | Shows edit form for campground         |
 | UPDATE | /campgrounds/:id      | PUT    | Shows newly edited campground          |
 | DESTROY| /campgrounds/:id      | DELETE | Deletes campground                     |
