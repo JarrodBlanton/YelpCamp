@@ -29,6 +29,7 @@ router.post('/', middleware.isLoggedIn, function(req, res) {
     var newCampground = { 
         name: name,
         image: img,
+        price: req.body.price, // New value from dynamic pricing version
         description: descr,
         // Now adding author information to the campground model
         author: {

@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 // Initiate model and schema for campground
 var Campground = mongoose.model('Campground', {
     name: String,
+    price: String,
     image: String, 
     description: String,
     // Embed a object reference to the comments
