@@ -1,9 +1,11 @@
 # YelpCamp
 A full stack project for the final section of my first web development bootcamp.
 
-## Full-stack Used
+## Stack used
+a MEEN stack :) 
 * MongoDB/Mongoose
 * Express
+* EJS (templating)
 * NodeJS
 
 ## Project utilizes knowledge of...
@@ -13,8 +15,9 @@ A full stack project for the final section of my first web development bootcamp.
 * Templating (ejs)
 * RESTful Routing
 * MongoDB/Mongoose
-* Modeling using mongoose Schemas
-* Passport
+* Modeling using mongoose schemas
+* Passport-Local authentication
+* Authorization
 
 
 ## RESTful Routes
