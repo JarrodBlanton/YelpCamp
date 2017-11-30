@@ -42,17 +42,19 @@
                 <div class="row">
                     <div class="col-md-12">
                         <strong><%= comment.author.username %></strong>
-                        <span class="pull-right"><strong>10 days ago</strong></span>
-                        <p>
-                                <%= comment.text %>
-                        </p>
-                        <!-- Makes sure user is logged in and the owner of the comment for the buttons to be displayed -->
-                        <% if (currUser && comment.author.id.equals(currUser._id)) { %> 
-                        <a class="btn btn-xs btn-warning" href="/campgrounds/<%=campground._id %>/comments/<%= comment._id %>/edit">Edit</a>
-                        <form class="delete-form" action="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>?_method=delete" method="POST">
-                            <button class="btn btn-xs btn-danger" >Delete</button>
-                        </form>
+                        <span class="pull-right">10 days ago</span>
+                        <div>
+                            <%= comment.text %>
+                            <!-- Makes sure user is logged in and the owner of the comment for the buttons to be displayed -->
+                            <% if (currUser && comment.author.id.equals(currUser._id)) { %> 
+                                <div class="pull-right">
+                                    <a class="btn btn-xs btn-warning" href="/campgrounds/<%=campground._id %>/comments/<%= comment._id %>/edit">Edit</a>
+                                    <form class="delete-form" action="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>?_method=delete" method="POST">
+                                        <button class="btn btn-xs btn-danger" >Delete</button>
+                                    </form>
+                                </div>
                         <% } %>
+                        </div>
                     </div>
                 </div>
             <% }) %>
