@@ -3,9 +3,13 @@ var mongoose = require('mongoose');
 // Initiate model and schema for campground
 var Campground = mongoose.model('Campground', {
     name: String,
-    price: String,
+    price: Number,
     image: String, 
     description: String,
+    // Values for Google Maps
+    location: String,
+    lat: Number,
+    lng: Number,
     // Embed a object reference to the comments
     comments: [
         {
