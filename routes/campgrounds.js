@@ -12,7 +12,7 @@ router.get('/', function(req, res){
         } else {
             // campgrounds is now all items in the db
             // retrieve user information from request body.
-            res.render('campgrounds/index', {campgrounds: campgrounds});
+            res.render('campgrounds/index', {campgrounds: campgrounds, page: 'campgrounds'});
         }
     }); 
 });

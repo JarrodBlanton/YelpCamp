@@ -13,7 +13,7 @@ router.get('/', function(req, res) {
 // ==============
 // show registration form
 router.get('/register', function(req, res) {
-    res.render('register');
+    res.render('register', {page: 'register'});
 });
 
 // Creates new user and adds to database
@@ -37,7 +37,7 @@ router.post('/register', function(req, res) {
 
 // Show login form for user
 router.get('/login', function(req, res) {
-    res.render('login');
+    res.render('login', {page: 'login'});
 });
 
 // Handles login logic for user
