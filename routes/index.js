@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router({mergeParams: true});
 var passport = require('passport');
 var User = require('../models/user');
+var Campground = require('../models/campground');
 
 // Root view for landing page
 router.get('/', function(req, res) {
@@ -19,10 +20,14 @@ router.get('/register', function(req, res) {
 // Creates new user and adds to database
 router.post('/register', function(req, res) {
     // grab username and password from body
-    var username = req.body.username;
-    var password = req.body.password;
-
-    User.register({username: username}, password, function(err, user) {
+    var newUser = new User({
+        username: req.body.username,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        avatar: req.body.avatar
+    });
+    User.register(newUser, req.body.password, function(err, user) {
         if (err) {
             return res.render('register', {'error': err.message});
         } else {
@@ -56,5 +61,25 @@ router.get('/logout', function(req, res) {
     req.flash('success', 'Goodbye!')
     res.redirect('/campgrounds');
 });
+
+// User Route
+router.get('/users/:id', function(req, res) {
+    User.findById(req.params.id, function(err, user) {
+        if (err) {
+            req.flash('error', "Something went wrong!");
+            res.redirect('/');
+        }
+        // eval(require("locus"));
+        console.log(user)
+        Campground.find().where('author.id').equals(user._id).exec(function(err, campgrounds) {
+            if (err) {
+                req.flash('error', "Something went wrong!");
+                res.redirect('/');
+            }
+            res.render('users/show', {user: user, campgrounds: campgrounds});            
+        });      
+    });
+});
+
 
 module.exports = router;

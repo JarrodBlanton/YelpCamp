@@ -3,9 +3,9 @@
 
 <header class="jumbotron">
     <% if (!currUser) { %>
-        <h1>Welcome to YelpCamp</h1>
+        <h1><span class="glyphicon glyphicon-tent"></span>Welcome to YelpCamp</h1>
     <% } else { %>
-        <h1>Welcome to YelpCamp, <%= currUser.username %></h1>
+        <h1><div style="{margin-top:5px;}"><span class="glyphicon glyphicon-tent"></span>Welcome to YelpCamp, <%= currUser.username %></div></h1>
     <% } %>
     <p>View hand-picked campgrounds from all over the world</p>
     <p>

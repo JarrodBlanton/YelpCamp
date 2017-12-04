@@ -10,6 +10,10 @@ var Campground = mongoose.model('Campground', {
     location: String,
     lat: Number,
     lng: Number,
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
     // Embed a object reference to the comments
     comments: [
         {
