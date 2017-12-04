@@ -11,6 +11,15 @@
     <p>
         <a href='/campgrounds/new' type="button" class="btn btn-primary btn-lg">Add New Campground</a>
     </p>
+    <!-- Fuzzy search -->
+    <p>
+        <form class="form-inline" action="/campgrounds" method="GET">
+            <div class="form-group">
+                <input class="form-control" type="text" name="search" placeholder="Search Campgrounds...">
+                <input class="btn btn-default" type="submit" value="Search">
+            </div>
+        </form>
+    </p>
 </header>
 
 <!-- Start grid -->

@@ -6,16 +6,36 @@ var geocoder = require('geocoder');
 
 // INDEX Route: view campgrounds
 router.get('/', function(req, res){
+    // eval(require('locus'));
     // Get all campgrounds from db
-    Campground.find(function(err, campgrounds) {
-        if (err) {
-            return console.log(err);
-        } else {
-            // campgrounds is now all items in the db
-            // retrieve user information from request body.
-            res.render('campgrounds/index', {campgrounds: campgrounds, page: 'campgrounds'});
-        }
-    }); 
+    if(req.query.search) {
+        // Line taken from SO for fuzzy searching in node
+        const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+        Campground.find({name: regex}, function(err, campgrounds) {
+            if (err) {
+                return console.log(err);
+            } else {
+                // campgrounds is now all items in the db
+                // retrieve user information from request body.
+                if (campgrounds.length < 1) { // error handling if user does not input valid search
+                    req.flash('error', 'Could not find that campground. Try again?');
+                    res.redirect('/campgrounds');
+                } else {
+                    res.render('campgrounds/index', {campgrounds: campgrounds, page: 'campgrounds'});
+                }
+            } 
+        });
+    } else {
+        Campground.find(function(err, campgrounds) {
+            if (err) {
+                return console.log(err);
+            } else {
+                // campgrounds is now all items in the db
+                // retrieve user information from request body.
+                res.render('campgrounds/index', {campgrounds: campgrounds, page: 'campgrounds'});
+            }
+        }); 
+    }
 });
 
 // CREATE Route: Add a new campground to database (REST concept)
@@ -71,7 +91,7 @@ router.get('/:id', function(req, res) {
     Campground.findById(id).populate('comments').exec(function(err, foundCampground) {
         // Additional error handling
         if (err || !foundCampground) {
-            console.log(err);
+            // console.log(err);
             req.flash('error', 'Sorry! That campground does not exist!');
             res.redirect('/campgrounds');
         } else {
@@ -125,11 +145,16 @@ router.put('/:id', middleware.checkCampgroundOwnership, function(req, res) {
 router.delete('/:id', middleware.checkCampgroundOwnership, function(req, res) {
     Campground.findByIdAndRemove(req.params.id, function(err) {
         if (err) {
-            console.log(err);
+            // console.log(err);
         }
         res.redirect('/campgrounds');
     });
 });
+
+// Some crazy regex function that searches for all characters globally found on Stack Overflow for fuzzy search
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+}
    
 // Export the router and its added routes
 module.exports = router;
